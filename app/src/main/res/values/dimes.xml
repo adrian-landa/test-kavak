@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Dimensiones generalaes-->
+    <dimen name="dimen_adjustable">0dp</dimen>
+    <dimen name="dimen_xxxshort">1dp</dimen>
+    <dimen name="dimen_xxshort">2dp</dimen>
+    <dimen name="dimen_xshort">4dp</dimen>
+    <dimen name="dimen_short">8dp</dimen>
+    <dimen name="dimen_normal">12dp</dimen>
+    <dimen name="dimen_medium">16dp</dimen>
+    <dimen name="dimen_large">32dp</dimen>
+    <dimen name="dimen_xlarge">48dp</dimen>
+    <dimen name="dimen_xxlarge">64dp</dimen>
+    <dimen name="dimen_xxxlarge">96dp</dimen>
+    <dimen name="dimen_xxxxlarge">192dp</dimen>
+
+    <!--Dimensiones para textos tomadas de material design-->
+
+    <dimen name="text_size_subtitle">20sp</dimen>
+    <dimen name="text_size_body">16sp</dimen>
+    <dimen name="text_size_body_2">14sp</dimen>
+    <!--Dimensiones para radios-->
+    <dimen name="radius_short">8dp</dimen>
+    <dimen name="radius_medium">32dp</dimen>
+
+</resources>
