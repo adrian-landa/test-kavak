@@ -1,6 +1,6 @@
-package mx.hunka.brastlewark.data.remote.interfaces
+package com.kavak.brastlewark.data.remote.interfaces
 
-import mx.hunka.brastlewark.enums.ExceptionType
+import com.kavak.brastlewark.enums.ExceptionType
 
 interface IWebErrorListener {
     fun handleException(type: ExceptionType, code: Int?, message: String?)
