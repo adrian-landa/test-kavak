@@ -9,6 +9,7 @@ import com.kavak.brastlewark.data.remote.implementation.CitizenService
 import com.kavak.brastlewark.data.remote.interfaces.ICitizenService
 import com.kavak.brastlewark.enums.ExceptionType
 import com.kavak.brastlewark.interfaces.IHome
+import com.kavak.brastlewark.ui.detail.DetailBottomSheetFragment
 import com.kavak.brastlewark.util.WrapperEvent
 import io.reactivex.disposables.CompositeDisposable
 
@@ -16,6 +17,7 @@ class HomeViewModel(context: Context) : ViewModel(), IHome.UseCases, IHome.Reque
 
     val loading: MutableLiveData<Boolean> = MutableLiveData()
     val citizens: MutableLiveData<List<Citizen>> = MutableLiveData()
+    val citizenDialog: MutableLiveData<WrapperEvent<DialogFragment>> = MutableLiveData()
     val webError: MutableLiveData<WrapperEvent<String>> = MutableLiveData()
 
     private val disposable = CompositeDisposable()
@@ -27,6 +29,7 @@ class HomeViewModel(context: Context) : ViewModel(), IHome.UseCases, IHome.Reque
     }
 
     override fun onCitizenSelected(citizen: Citizen) {
+        citizenDialog.value = WrapperEvent(DetailBottomSheetFragment.newInstance(citizen))
     }
 
     override fun onFetchResponse(payload: List<Citizen>?) {

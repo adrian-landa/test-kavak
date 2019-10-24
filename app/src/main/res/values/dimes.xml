@@ -22,5 +22,6 @@
     <!--Dimensiones para radios-->
     <dimen name="radius_short">8dp</dimen>
     <dimen name="radius_medium">32dp</dimen>
-
+    <dimen name="width_thumbnail">100dp</dimen>
+    <dimen name="height_thumbnail">100dp</dimen>
 </resources>

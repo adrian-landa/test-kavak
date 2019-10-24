@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorGray">
+
+    <ImageView
+        android:id="@+id/imgCitizenThumbnail"
+        android:layout_width="@dimen/width_thumbnail"
+        android:layout_height="@dimen/height_thumbnail"
+        android:layout_margin="@dimen/dimen_short"
+        android:scaleType="fitXY"
+        android:src="@drawable/ic_gnome"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <TextView
+        android:id="@+id/tvCitizenName"
+        style="@style/Subtitle"
+        android:textColor="@color/colorWhite"
+        tools:text="Luis Adrian Lpez Landa"
+        android:layout_margin="@dimen/dimen_medium"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/imgCitizenThumbnail"/>
+
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/dimen_medium"
+        android:backgroundTint="@color/colorGray"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvCitizenName"
+        app:cardCornerRadius="@dimen/radius_short">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+            <TextView
+                android:id="@+id/tvCitizenAge"
+                android:textColor="@color/colorWhite"
+                style="@style/Body1"
+                android:layout_margin="@dimen/dimen_short"
+                android:drawableStart="@drawable/ic_age"
+                app:layout_constraintLeft_toRightOf="@id/imgCitizenThumbnail"
+                app:layout_constraintRight_toLeftOf="@id/tvCitizenJobs"
+                app:layout_constraintTop_toBottomOf="@id/tvCitizenName"
+                tools:text="Age : 24 years" />
+
+            <TextView
+                android:id="@+id/tvCitizenJobs"
+                style="@style/Body1"
+                android:textColor="@color/colorWhite"
+                android:layout_margin="@dimen/dimen_short"
+                android:drawableStart="@drawable/ic_jobs"
+                app:layout_constraintLeft_toRightOf="@id/tvCitizenAge"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tvCitizenName"
+                tools:text="Jobs: 1.70" />
+
+            <TextView
+                android:id="@+id/tvCitizenHeight"
+                style="@style/Body1"
+                android:textColor="@color/colorWhite"
+                android:layout_margin="@dimen/dimen_short"
+                android:drawableStart="@drawable/ic_height"
+                app:layout_constraintLeft_toRightOf="@id/imgCitizenThumbnail"
+                app:layout_constraintRight_toLeftOf="@id/tvCitizenWeight"
+                app:layout_constraintTop_toBottomOf="@id/tvCitizenAge"
+                tools:text="A: 1.70" />
+
+            <TextView
+                android:id="@+id/tvCitizenWeight"
+                style="@style/Body1"
+                android:textColor="@color/colorWhite"
+                android:layout_margin="@dimen/dimen_short"
+                android:drawableStart="@drawable/ic_weight"
+                app:layout_constraintLeft_toRightOf="@id/tvCitizenHeight"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tvCitizenJobs"
+                tools:text="P: 72Kg" />
+
+            <TextView
+                android:id="@+id/tvCitizenHair"
+                style="@style/Body1"
+                android:textColor="@color/colorWhite"
+                android:layout_margin="@dimen/dimen_short"
+                android:drawableStart="@drawable/ic_dye"
+                app:layout_constraintLeft_toRightOf="@id/tvCitizenHeight"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tvCitizenJobs"
+                tools:text="P: 72Kg" />
+
+            <TextView
+                android:id="@+id/tvCitizenFriends"
+                style="@style/Body1"
+                android:textColor="@color/colorWhite"
+                android:layout_margin="@dimen/dimen_short"
+                android:drawableStart="@drawable/ic_friendship"
+                app:layout_constraintLeft_toRightOf="@id/tvCitizenHeight"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tvCitizenJobs"
+                tools:text="P: 72Kg" />
+
+        </LinearLayout>
+
+    </com.google.android.material.card.MaterialCardView>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
