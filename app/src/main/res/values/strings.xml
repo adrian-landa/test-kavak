@@ -14,4 +14,5 @@
     <string name="label_height">Height</string>
     <string name="label_weight">Weight</string>
     <string name="label_apply">Apply</string>
+    <string name="label_try_again">Try Again</string>
 </resources>

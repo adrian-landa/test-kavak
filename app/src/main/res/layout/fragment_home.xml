@@ -23,11 +23,15 @@
                 android:id="@+id/tilSearch"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:hint="@string/label_menu_search"
                 android:visibility="gone">
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/edtSearch"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"/>
+                    android:layout_height="match_parent"
+                    android:backgroundTint="@color/colorWhite"
+                    android:background="@color/colorWhite"
+                    />
             </com.google.android.material.textfield.TextInputLayout>
 
         </androidx.appcompat.widget.Toolbar>
@@ -50,7 +54,30 @@
         android:id="@+id/imgNotFound"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:src="@drawable/ic_not_found"
         android:layout_gravity="center"/>
+
+    <LinearLayout
+        android:id="@+id/llErrorContainer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:layout_gravity="center"
+        android:orientation="vertical">
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_error"
+            android:layout_gravity="center"/>
+        <TextView
+            style="@style/Subtitle"
+            android:layout_gravity="center"
+            android:text="@string/label_try_again"/>
+
+    </LinearLayout>
+
+
 
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

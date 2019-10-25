@@ -101,6 +101,8 @@ class HomeFragment : Fragment(), IView, IRecyclerListener<Citizen>, IDialogListe
         })
 
         viewmodel.webError.observe(this, Observer { error ->
+            llErrorContainer.visibility = View.VISIBLE
+
             error.getContentIfNotHandled()?.let { message ->
                 Toast.makeText(ctx, message, Toast.LENGTH_SHORT).show()
             }
@@ -118,6 +120,10 @@ class HomeFragment : Fragment(), IView, IRecyclerListener<Citizen>, IDialogListe
                 inputMethodManager.hideSoftInputFromWindow(windowToken, 0)
             }
             false
+        }
+        llErrorContainer.setOnClickListener { v ->
+            v.visibility = View.GONE
+            viewmodel.getCitizens()
         }
     }
 
@@ -155,6 +161,7 @@ class HomeFragment : Fragment(), IView, IRecyclerListener<Citizen>, IDialogListe
     private fun setToolbar() {
         (activity as AppCompatActivity).setSupportActionBar(toolbar)
     }
+
 
 
 }
