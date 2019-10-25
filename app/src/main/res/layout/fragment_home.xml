@@ -31,6 +31,8 @@
                     android:layout_height="match_parent"
                     android:backgroundTint="@color/colorWhite"
                     android:background="@color/colorWhite"
+                    android:inputType="text"
+                    android:maxLines="1"
                     />
             </com.google.android.material.textfield.TextInputLayout>
 
