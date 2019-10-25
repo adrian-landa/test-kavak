@@ -2,6 +2,7 @@ package com.kavak.brastlewark.ui.home
 
 import android.app.Dialog
 import android.os.Bundle
+import android.text.Editable
 import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -17,13 +18,13 @@ import com.kavak.brastlewark.util.getViewModel
 import com.kavak.brastlewark.viewmodels.HomeViewModel
 import kotlinx.android.synthetic.main.fragment_home.*
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.DialogFragment
 import com.kavak.brastlewark.interfaces.IDialogListener
 import com.kavak.brastlewark.ui.filters.FilterDialogFragment
 
 
 class HomeFragment : Fragment(), IView, IRecyclerListener<Citizen>, IDialogListener {
-
 
     private val viewmodel: HomeViewModel by lazy { getViewModel { HomeViewModel(context!!) } }
 
@@ -83,14 +84,20 @@ class HomeFragment : Fragment(), IView, IRecyclerListener<Citizen>, IDialogListe
                 ?.show(fragmentManager!!, Constants.TAG_FRAGMENT_DIALOG_DETAIL)
         })
 
+        viewmodel.isSearchVisible.observe(this, Observer { isVisible ->
+            edtSearch.visibility = if (isVisible) View.VISIBLE else View.GONE
+        })
+
     }
 
     override fun setListeners() {
+        edtSearch.addTextChangedListener { text: Editable? -> viewmodel.onQueryTyped(text) }
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.itmSearch -> {
+                viewmodel.onSearchIconClick()
                 true
             }
             R.id.itmFilter -> {
