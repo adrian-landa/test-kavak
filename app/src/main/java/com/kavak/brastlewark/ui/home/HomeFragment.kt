@@ -7,6 +7,7 @@ import android.text.Editable
 import android.util.Log
 import android.view.*
 import android.view.inputmethod.InputMethodManager
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -23,6 +24,7 @@ import kotlinx.android.synthetic.main.fragment_home.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.DialogFragment
+import com.google.android.material.snackbar.Snackbar
 import com.kavak.brastlewark.interfaces.IDialogListener
 import com.kavak.brastlewark.ui.filters.FilterDialogFragment
 
@@ -80,6 +82,7 @@ class HomeFragment : Fragment(), IView, IRecyclerListener<Citizen>, IDialogListe
 
         viewmodel.citizens.observe(this, Observer { list ->
             adapter.submitList(list)
+            imgNotFound.visibility = if (list.isNotEmpty()) View.GONE else View.VISIBLE
         })
 
         viewmodel.citizenDialog.observe(this, Observer { dialog ->
@@ -87,8 +90,20 @@ class HomeFragment : Fragment(), IView, IRecyclerListener<Citizen>, IDialogListe
                 ?.show(fragmentManager!!, Constants.TAG_FRAGMENT_DIALOG_DETAIL)
         })
 
+        viewmodel.filterDialog.observe(this, Observer { dialog ->
+            val content = dialog.getContentIfNotHandled()
+            content?.setTargetFragment(this, Constants.REQUEST_CODE_DIALOG_FILTER)
+            content?.show(fragmentManager!!, Constants.TAG_FRAGMENT_DIALOG_FILTER)
+        })
+
         viewmodel.isSearchVisible.observe(this, Observer { isVisible ->
             tilSearch.visibility = if (isVisible) View.VISIBLE else View.GONE
+        })
+
+        viewmodel.webError.observe(this, Observer { error ->
+            error.getContentIfNotHandled()?.let { message ->
+                Toast.makeText(ctx, message, Toast.LENGTH_SHORT).show()
+            }
         })
 
     }
@@ -112,15 +127,14 @@ class HomeFragment : Fragment(), IView, IRecyclerListener<Citizen>, IDialogListe
                 val isVisible = viewmodel.isSearchVisible.value ?: true
                 val icon = if (isVisible) R.drawable.ic_search else R.drawable.ic_clear
                 item.setIcon(icon)
+                edtSearch.setText("")
                 viewmodel.onSearchIconClick()
                 true
             }
             R.id.itmFilter -> {
-
-                val dialog = FilterDialogFragment.newInstance()
-                dialog.setTargetFragment(this, Constants.REQUEST_CODE_DIALOG_FILTER)
-                dialog.show(fragmentManager!!, Constants.TAG_FRAGMENT_DIALOG_FILTER)
+                viewmodel.onFilterIconClick()
                 true
+
             }
             else -> super.onOptionsItemSelected(item)
         }
@@ -135,6 +149,7 @@ class HomeFragment : Fragment(), IView, IRecyclerListener<Citizen>, IDialogListe
         if (dialog is DialogFragment?) {
             dialog?.dismiss()
         }
+        viewmodel.onFilterApplied()
     }
 
     private fun setToolbar() {

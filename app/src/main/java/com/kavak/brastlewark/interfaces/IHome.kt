@@ -25,6 +25,11 @@ interface IHome {
         fun onQueryTyped(query:Editable?)
 
         /**
+         * Method used to filter the data by the values weight, height, age
+         */
+        fun onFilterApplied()
+
+        /**
          * Method used to toggle the search edit field
          */
         fun onSearchIconClick()

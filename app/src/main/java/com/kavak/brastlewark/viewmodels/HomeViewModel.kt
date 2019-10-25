@@ -8,22 +8,27 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.kavak.brastlewark.config.AppDB
+import com.kavak.brastlewark.constans.Constants
 import com.kavak.brastlewark.data.entities.Citizen
 import com.kavak.brastlewark.data.remote.implementation.CitizenService
 import com.kavak.brastlewark.data.remote.interfaces.ICitizenService
 import com.kavak.brastlewark.enums.ExceptionType
 import com.kavak.brastlewark.interfaces.IHome
 import com.kavak.brastlewark.ui.detail.DetailBottomSheetFragment
+import com.kavak.brastlewark.ui.filters.FilterDialogFragment
+import com.kavak.brastlewark.util.SharedPreferencesManager
 import com.kavak.brastlewark.util.WrapperEvent
 import io.reactivex.disposables.CompositeDisposable
+import kotlinx.android.synthetic.main.dialog_filter.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
+import kotlin.math.max
+import kotlin.math.min
 
 class HomeViewModel(private val context: Context) : ViewModel(), IHome.UseCases,
     IHome.RequestListener {
-
 
 
     private val job = Job()
@@ -37,6 +42,7 @@ class HomeViewModel(private val context: Context) : ViewModel(), IHome.UseCases,
     val loading: MutableLiveData<Boolean> = MutableLiveData()
     var citizens: MutableLiveData<List<Citizen>> = MutableLiveData()
     val citizenDialog: MutableLiveData<WrapperEvent<DialogFragment>> = MutableLiveData()
+    val filterDialog: MutableLiveData<WrapperEvent<DialogFragment>> = MutableLiveData()
     val webError: MutableLiveData<WrapperEvent<String>> = MutableLiveData()
     val isSearchVisible: MutableLiveData<Boolean> = MutableLiveData(false)
 
@@ -60,9 +66,18 @@ class HomeViewModel(private val context: Context) : ViewModel(), IHome.UseCases,
             val maxHeight = dao.getMaxHeight()
             val minWeight = dao.getMinWeight()
             val maxWeight = dao.getMaxWeight()
-            Log.i("RAG",minAge.toString())
 
-
+            val dialog = FilterDialogFragment.newInstance(
+                minAge = minAge,
+                maxAge = maxAge,
+                minHeight = minHeight,
+                maxHeight = maxHeight,
+                minWeight = minWeight,
+                maxWeight = maxWeight
+            )
+            mainThread.launch {
+                filterDialog.value = WrapperEvent(dialog)
+            }
         }
     }
 
@@ -71,7 +86,6 @@ class HomeViewModel(private val context: Context) : ViewModel(), IHome.UseCases,
      * @param query: value to search
      */
     override fun onQueryTyped(query: Editable?) {
-        Log.i("TAG",query.toString())
         loading.value = true
         ioThread.launch {
             val list = if (query != null && query.isNotBlank()) {
@@ -80,7 +94,6 @@ class HomeViewModel(private val context: Context) : ViewModel(), IHome.UseCases,
                 dao.getAll()
             }
             mainThread.launch {
-                Log.i("TAG",list.toString())
                 loading.value = false
                 citizens.value = list
             }
@@ -93,6 +106,23 @@ class HomeViewModel(private val context: Context) : ViewModel(), IHome.UseCases,
     override fun onSearchIconClick() {
         val tmpValue = isSearchVisible.value ?: false
         isSearchVisible.value = !tmpValue
+    }
+
+    /**
+     * Method used to filter the data by the values weight, height, age
+     */
+    override fun onFilterApplied() {
+        loading.value = true
+        val filterAge = SharedPreferencesManager[context, Constants.SPM_FILTER_AGE, 0]
+        val filterHeight = SharedPreferencesManager[context, Constants.SPM_FILTER_HEIGHT, 0]
+        val filterWeight = SharedPreferencesManager[context, Constants.SPM_FILTER_WEIGHT, 0]
+        ioThread.launch {
+            val list = dao.filter(filterAge = filterAge,filterHeight = filterHeight,filterWeight = filterWeight)
+            mainThread.launch {
+                loading.value= false
+                citizens.value = list
+            }
+        }
     }
 
     override fun onFetchResponse(payload: List<Citizen>?) {

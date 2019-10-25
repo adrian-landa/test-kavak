@@ -44,6 +44,14 @@
             app:layout_constraintRight_toRightOf="@id/seekbarAge"
             app:layout_constraintTop_toBottomOf="@id/seekbarAge" />
 
+        <TextView
+            android:id="@+id/tvFilterAgeCurrent"
+            style="@style/Body2"
+            android:layout_margin="@dimen/dimen_short"
+            app:layout_constraintTop_toBottomOf="@id/seekbarAge"
+            app:layout_constraintLeft_toRightOf="@id/tvFilterAgeMin"
+            app:layout_constraintRight_toLeftOf="@id/tvFilterAgeMax"/>
+
 
         <TextView
             android:id="@+id/tvFilterWeight"
@@ -72,12 +80,21 @@
             app:layout_constraintTop_toBottomOf="@id/seekbarWeight" />
 
         <TextView
-            android:id="@+id/tvFilterWeightAgeMax"
+            android:id="@+id/tvFilterWeightMax"
             style="@style/Body2"
             android:layout_margin="@dimen/dimen_short"
-            android:text="@string/template_min"
+            android:text="@string/template_max"
             app:layout_constraintRight_toRightOf="@id/seekbarWeight"
             app:layout_constraintTop_toBottomOf="@id/seekbarWeight" />
+
+        <TextView
+            android:id="@+id/tvFilterWeightCurrent"
+            style="@style/Body2"
+            android:layout_margin="@dimen/dimen_short"
+            app:layout_constraintTop_toBottomOf="@id/seekbarWeight"
+            app:layout_constraintLeft_toRightOf="@id/tvFilterWeightMin"
+            app:layout_constraintRight_toLeftOf="@id/tvFilterWeightMax"/>
+
 
 
         <TextView
@@ -107,12 +124,20 @@
             app:layout_constraintTop_toBottomOf="@id/seekbarHeight" />
 
         <TextView
-            android:id="@+id/tvFilterHeightAgeMax"
+            android:id="@+id/tvFilterHeightMax"
             style="@style/Body2"
             android:layout_margin="@dimen/dimen_short"
             android:text="@string/template_min"
             app:layout_constraintRight_toRightOf="@id/seekbarHeight"
             app:layout_constraintTop_toBottomOf="@id/seekbarHeight" />
+
+        <TextView
+            android:id="@+id/tvFilterHeightCurrent"
+            style="@style/Body2"
+            android:layout_margin="@dimen/dimen_short"
+            app:layout_constraintTop_toBottomOf="@id/seekbarHeight"
+            app:layout_constraintLeft_toRightOf="@id/tvFilterHeightMin"
+            app:layout_constraintRight_toLeftOf="@id/tvFilterHeightMax"/>
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnApply"

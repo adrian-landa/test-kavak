@@ -5,8 +5,9 @@
     <string name="template_age">Age: %d years</string>
     <string name="template_jobs">Jobs: %d</string>
     <string name="template_hair_color">Hair Color: %s</string>
-    <string name="template_min">Min: %f</string>
-    <string name="template_max">Max: %f</string>
+    <string name="template_min">Min: %.2f</string>
+    <string name="template_max">Max: %.2f</string>
+    <string name="template_val">Val: %.2f</string>
     <string name="label_menu_search">Search</string>
     <string name="label_menu_filter">Filter</string>
     <string name="label_age">Age</string>
