@@ -18,13 +18,17 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <EditText
-                android:id="@+id/edtSearch"
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/tilSearch"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/dimen_xlarge"
-                android:background="@color/colorWhite"
-                android:layout_margin="@dimen/dimen_short"
-                android:visibility="gone" />
+                android:layout_height="match_parent"
+                android:visibility="gone">
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/edtSearch"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
         </androidx.appcompat.widget.Toolbar>
     </com.google.android.material.appbar.AppBarLayout>
 

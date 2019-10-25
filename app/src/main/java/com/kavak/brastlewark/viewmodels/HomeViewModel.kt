@@ -2,9 +2,12 @@ package com.kavak.brastlewark.viewmodels
 
 import android.content.Context
 import android.text.Editable
+import android.util.Log
 import androidx.fragment.app.DialogFragment
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.kavak.brastlewark.config.AppDB
 import com.kavak.brastlewark.data.entities.Citizen
 import com.kavak.brastlewark.data.remote.implementation.CitizenService
 import com.kavak.brastlewark.data.remote.interfaces.ICitizenService
@@ -13,18 +16,29 @@ import com.kavak.brastlewark.interfaces.IHome
 import com.kavak.brastlewark.ui.detail.DetailBottomSheetFragment
 import com.kavak.brastlewark.util.WrapperEvent
 import io.reactivex.disposables.CompositeDisposable
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
 
-class HomeViewModel(context: Context) : ViewModel(), IHome.UseCases, IHome.RequestListener {
+class HomeViewModel(private val context: Context) : ViewModel(), IHome.UseCases,
+    IHome.RequestListener {
 
+
+
+    private val job = Job()
+    private val mainThread = CoroutineScope(job + Dispatchers.Main)
+    private val ioThread = CoroutineScope(job + Dispatchers.IO)
+
+    private val dao = AppDB.getInstance(context).citizenDAO()
+    private val disposable = CompositeDisposable()
+    private val remote: ICitizenService = CitizenService(context, disposable)
 
     val loading: MutableLiveData<Boolean> = MutableLiveData()
-    val citizens: MutableLiveData<List<Citizen>> = MutableLiveData()
+    var citizens: MutableLiveData<List<Citizen>> = MutableLiveData()
     val citizenDialog: MutableLiveData<WrapperEvent<DialogFragment>> = MutableLiveData()
     val webError: MutableLiveData<WrapperEvent<String>> = MutableLiveData()
     val isSearchVisible: MutableLiveData<Boolean> = MutableLiveData(false)
-
-    private val disposable = CompositeDisposable()
-    private val remote: ICitizenService = CitizenService(context, disposable)
 
     override fun getCitizens() {
         loading.value = true
@@ -36,14 +50,40 @@ class HomeViewModel(context: Context) : ViewModel(), IHome.UseCases, IHome.Reque
     }
 
     /**
+     * Method used to open the filter dialog
+     */
+    override fun onFilterIconClick() {
+        ioThread.launch {
+            val minAge = dao.getMinAge()
+            val maxAge = dao.getMaxAge()
+            val minHeight = dao.getMinHeight()
+            val maxHeight = dao.getMaxHeight()
+            val minWeight = dao.getMinWeight()
+            val maxWeight = dao.getMaxWeight()
+            Log.i("RAG",minAge.toString())
+
+
+        }
+    }
+
+    /**
      * Method used to search on the data available
      * @param query: value to search
      */
     override fun onQueryTyped(query: Editable?) {
-        val tmpCitizen = citizens.value ?: ArrayList<Citizen>()
-        if (query != null && query.isNotBlank()) {
-            val result = tmpCitizen.filter { item -> item.name.contains(query, true) }
-            citizens.value = result
+        Log.i("TAG",query.toString())
+        loading.value = true
+        ioThread.launch {
+            val list = if (query != null && query.isNotBlank()) {
+                dao.getCitizensByName(query.trim().toString())
+            } else {
+                dao.getAll()
+            }
+            mainThread.launch {
+                Log.i("TAG",list.toString())
+                loading.value = false
+                citizens.value = list
+            }
         }
     }
 
@@ -51,13 +91,19 @@ class HomeViewModel(context: Context) : ViewModel(), IHome.UseCases, IHome.Reque
      * Method used to toggle the search edit field
      */
     override fun onSearchIconClick() {
-        val tmpValue = isSearchVisible.value?:false
+        val tmpValue = isSearchVisible.value ?: false
         isSearchVisible.value = !tmpValue
     }
 
     override fun onFetchResponse(payload: List<Citizen>?) {
-        loading.value = false
-        citizens.value = payload ?: ArrayList()
+        ioThread.launch {
+            dao.insert(payload ?: ArrayList())
+            val list = dao.getAll()
+            mainThread.launch {
+                loading.value = false
+                citizens.value = list
+            }
+        }
     }
 
     override fun handleException(type: ExceptionType, code: Int?, message: String?) {

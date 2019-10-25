@@ -1,6 +1,8 @@
 package com.kavak.brastlewark.interfaces
 
 import android.text.Editable
+import androidx.lifecycle.LiveData
+import androidx.paging.PagedList
 import com.kavak.brastlewark.data.entities.Citizen
 import com.kavak.brastlewark.data.remote.interfaces.IWebErrorListener
 
@@ -26,6 +28,11 @@ interface IHome {
          * Method used to toggle the search edit field
          */
         fun onSearchIconClick()
+
+        /**
+         * Method used to open the filter dialog
+         */
+        fun onFilterIconClick()
     }
 
     interface RequestListener : IWebErrorListener {

@@ -1,9 +1,12 @@
 package com.kavak.brastlewark.ui.home
 
 import android.app.Dialog
+import android.content.Context
 import android.os.Bundle
 import android.text.Editable
+import android.util.Log
 import android.view.*
+import android.view.inputmethod.InputMethodManager
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -85,22 +88,35 @@ class HomeFragment : Fragment(), IView, IRecyclerListener<Citizen>, IDialogListe
         })
 
         viewmodel.isSearchVisible.observe(this, Observer { isVisible ->
-            edtSearch.visibility = if (isVisible) View.VISIBLE else View.GONE
+            tilSearch.visibility = if (isVisible) View.VISIBLE else View.GONE
         })
 
     }
 
     override fun setListeners() {
         edtSearch.addTextChangedListener { text: Editable? -> viewmodel.onQueryTyped(text) }
+        recyclerCitizens.setOnTouchListener { _, _ ->
+            val inputMethodManager =
+                context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            val windowToken = edtSearch.windowToken
+            if (windowToken != null) {
+                inputMethodManager.hideSoftInputFromWindow(windowToken, 0)
+            }
+            false
+        }
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.itmSearch -> {
+                val isVisible = viewmodel.isSearchVisible.value ?: true
+                val icon = if (isVisible) R.drawable.ic_search else R.drawable.ic_clear
+                item.setIcon(icon)
                 viewmodel.onSearchIconClick()
                 true
             }
             R.id.itmFilter -> {
+
                 val dialog = FilterDialogFragment.newInstance()
                 dialog.setTargetFragment(this, Constants.REQUEST_CODE_DIALOG_FILTER)
                 dialog.show(fragmentManager!!, Constants.TAG_FRAGMENT_DIALOG_FILTER)

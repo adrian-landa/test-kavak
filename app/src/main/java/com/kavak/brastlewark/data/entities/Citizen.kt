@@ -1,9 +1,13 @@
 package com.kavak.brastlewark.data.entities
 
 
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 import com.squareup.moshi.Json
 
+@Entity(tableName = "citizens")
 data class Citizen(
+    @PrimaryKey
     val id: Int,
     val name: String,
     val thumbnail: String,
