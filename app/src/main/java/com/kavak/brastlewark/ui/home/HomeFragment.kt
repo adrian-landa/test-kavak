@@ -83,6 +83,7 @@ class HomeFragment : Fragment(), IView, IRecyclerListener<Citizen>, IDialogListe
         viewmodel.citizens.observe(this, Observer { list ->
             adapter.submitList(list)
             imgNotFound.visibility = if (list.isNotEmpty()) View.GONE else View.VISIBLE
+            llErrorContainer.visibility = View.GONE
         })
 
         viewmodel.citizenDialog.observe(this, Observer { dialog ->
